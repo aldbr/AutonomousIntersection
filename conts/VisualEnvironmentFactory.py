@@ -3,7 +3,7 @@ from visual import *
 class VisualEnvironmentFactory:
 
 	@staticmethod
-	def loadFromCSVFile(name, filename, position):
+	def load_from_CSV_file(name, filename, position):
 		scene = display(title=name,x=position, y=0, width=600, height=600, \
 			center=(1,0,0), background=(0.62,0.90,0.33), forward=-vector(0.25,0.25,0.25))
 		distant_light(display=scene, direction=(1,0,1), color=(0.62,0.90,0.33))

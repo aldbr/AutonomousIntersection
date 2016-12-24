@@ -3,7 +3,7 @@ from Path import *
 class TrafficPathFactory:
 
 	@staticmethod
-	def loadFromCSVFile(filename):
+	def load_from_CSV_file(filename):
 		paths = []
 		with open(filename, "r") as filePath:
 			filePath.readline()
