@@ -7,6 +7,8 @@ At the moment, the software is under development but you can test it by installi
 
 > sudo apt-get install python2.7
 
+You can also visit the website : https://www.python.org/downloads/
+
 ##VPython
 This project is compatible with an old version of VPython(5.12 2009), and you can simply install it with.
   
