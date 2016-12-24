@@ -17,5 +17,6 @@ class BasicVehicle(Vehicle):
 		for pos in self._traficPath.positions:
 			self._position = pos
 			time.sleep(0.05)
+		self._position = None
 
 

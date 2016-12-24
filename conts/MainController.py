@@ -55,72 +55,33 @@ class MainController:
 		random.seed(140)
 		t = IntersectionTraffic("ressources/intersectionPaths.csv")
 
-		#v1 = BasicVehicle(t.paths[random.randint(1, len(t.paths))-1])
-		#v2 = BasicVehicle(t.paths[random.randint(1, len(t.paths))-1])
-		
-		v1 = BasicVehicle(t.paths[0])
-		v2 = BasicVehicle(t.paths[1])
-		v3 = BasicVehicle(t.paths[2])
-		v4 = BasicVehicle(t.paths[3])
-		v5 = BasicVehicle(t.paths[4])
-		v6 = BasicVehicle(t.paths[5])
-		v7 = BasicVehicle(t.paths[6])
-		v8 = BasicVehicle(t.paths[7])
-		v9 = BasicVehicle(t.paths[8])
-		v10 = BasicVehicle(t.paths[9])
-		v11 = BasicVehicle(t.paths[10])
-		v12 = BasicVehicle(t.paths[11])
-	
-		self.scene.mouse.getclick()
-		v1.start()
-		v2.start()
-		v3.start()
-		v4.start()
-		v5.start()
-		v6.start()
-		v7.start()
-		v8.start()
-		v9.start()
-		v10.start()
-		v11.start()
-		v12.start()
+		vehicles = []
+		boxes = []
+		i = 0
+		while i < 11:
+			vehicles.append(BasicVehicle(t.paths[random.randint(1, len(t.paths))-1]))
+			i += 1
 
-		while(1):
-			
-			b1 = box(display=self.scene, pos=(v1.position.x, 2.5, v1.position.y), length=2, height=2, width=2, color=color.white)
-			b2 = box(display=self.scene, pos=(v2.position.x, 2.5, v2.position.y), length=2, height=2, width=2, color=color.white)
-			b3 = box(display=self.scene, pos=(v3.position.x, 2.5, v3.position.y), length=2, height=2, width=2, color=color.white)
-			b4 = box(display=self.scene, pos=(v4.position.x, 2.5, v4.position.y), length=2, height=2, width=2, color=color.white)
-			b5 = box(display=self.scene, pos=(v5.position.x, 2.5, v5.position.y), length=2, height=2, width=2, color=color.white)
-			b6 = box(display=self.scene, pos=(v6.position.x, 2.5, v6.position.y), length=2, height=2, width=2, color=color.white)
-			b7 = box(display=self.scene, pos=(v7.position.x, 2.5, v7.position.y), length=2, height=2, width=2, color=color.white)
-			b8 = box(display=self.scene, pos=(v8.position.x, 2.5, v8.position.y), length=2, height=2, width=2, color=color.white)
-			b9 = box(display=self.scene, pos=(v9.position.x, 2.5, v9.position.y), length=2, height=2, width=2, color=color.white)
-			b10 = box(display=self.scene, pos=(v10.position.x, 2.5, v10.position.y), length=2, height=2, width=2, color=color.white)
-			b11 = box(display=self.scene, pos=(v11.position.x, 2.5, v11.position.y), length=2, height=2, width=2, color=color.white)
-			b12 = box(display=self.scene, pos=(v12.position.x, 2.5, v12.position.y), length=2, height=2, width=2, color=color.white)
+
+		for v in vehicles:
+			v.start()
+
+		while(vehicles):
+			i = 0
+			while i < len(vehicles):
+				pos = vehicles[i].position
+				if pos is not None:
+					boxes.append(box(display=self.scene, pos=(pos.x, 2.5, pos.y), \
+						length=2, height=2, width=2, color=color.white))
+				else:
+					vehicles[i].join()
+					del vehicles[i]
+
+				i += 1
 			rate(20)
-			b1.visible = 0
-			b2.visible = 0
-			b3.visible = 0
-			b4.visible = 0
-			b5.visible = 0
-			b6.visible = 0
-			b7.visible = 0
-			b8.visible = 0
-			b9.visible = 0
-			b10.visible = 0
-			b11.visible = 0
-			b12.visible = 0
-			del b1
-			del b2
-			del b3
-			del b4
-			del b5
-			del b6
-			del b7
-			del b8
-			del b9
-			del b10
-			del b11
-			del b12
+			i = 0
+			while i < len(boxes):
+				boxes[i].visible = 0
+				i += 1
+			del boxes[:]
+
