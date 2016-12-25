@@ -3,6 +3,10 @@ from visual import *
 from VisualEnvironmentFactory import *
 from ModelController import *
 
+import sys
+sys.path.append('..')
+from model.Model import *
+
 class MainController:
 
 
@@ -13,8 +17,8 @@ class MainController:
 
 
 	def initialize_simulation(self):
-		m1 = ModelController(self.scene)
-		m2 = ModelController(self.scene2)
+		m1 = ModelController(self.scene, Model())
+		m2 = ModelController(self.scene2, Model())
 
 		m1.start()
 		m2.start()
