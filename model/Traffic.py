@@ -3,7 +3,7 @@ from TrafficPathFactory import *
 class Traffic:
 
 	def __init__(self, filename):
-		self._paths = TrafficPathFactory.load_from_CSV_file(filename)
+		self._paths = TrafficPathFactory.load_from_CSV_src_dst_file(filename, 0.1)
 
 	def _get_paths(self):
 		return self._paths

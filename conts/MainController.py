@@ -25,36 +25,3 @@ class MainController:
 
 		m1.join()
 		m2.join()
-		#random.seed(140)
-		#t = IntersectionTraffic("ressources/intersectionPaths.csv")
-#
-		#vehicles = []
-		#boxes = []
-		#i = 0
-		#while i < 10:
-		#	vehicles.append(BasicVehicle(t.paths[random.randint(1, len(t.paths))-1]))
-		#	i += 1
-#
-#
-		#for v in vehicles:
-		#	v.start()
-#
-		#while(vehicles):
-		#	i = 0
-		#	while i < len(vehicles):
-		#		pos = vehicles[i].position
-		#		if pos is not None:
-		#			boxes.append(box(display=self.scene, pos=(pos.x, 2.5, pos.y), \
-		#				length=2, height=2, width=2, color=color.red))
-		#		else:
-		#			vehicles[i].join()
-		#			del vehicles[i]
-#
-		#		i += 1
-		#	rate(20)
-		#	i = 0
-		#	while i < len(boxes):
-		#		boxes[i].visible = 0
-		#		i += 1
-		#	del boxes[:]
-

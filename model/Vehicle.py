@@ -4,9 +4,9 @@ from threading import Thread
 class Vehicle(Thread): 
 	__metaclass__=ABCMeta
 
-	def __init__(self, traficPath):
+	def __init__(self, traficPath, speed):
 		Thread.__init__(self)
-		self._speed = 0
+		self._speed = speed
 		self._traficPath = traficPath
 		self._position = traficPath.positions[0]
 
@@ -27,6 +27,13 @@ class Vehicle(Thread):
 	def _set_position(self, pos):
 		self._position = pos
 	position = property(_get_position, _set_position)
+
+	@abstractmethod
+	def accelerate(self, speed):
+		pass
+
+	def slow_down(self, speed):
+		pass
 	
 	@abstractmethod
 	def run(self):

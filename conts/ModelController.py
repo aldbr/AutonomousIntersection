@@ -37,8 +37,10 @@ class ModelController(Thread):
 						del self.model.vehicles[i]
 
 					i += 1
-				rate(20)
+				rate(500)
 
 				for b in boxes:
 					b.visible = 0
 				del boxes[:]
+
+			self.model.join()
