@@ -24,7 +24,7 @@ We recommend you to open the project with one of these IDE:
 + Sublime Text : https://www.sublimetext.com/
 + Vidle : available with the latest version of VPython: http://vpython.org/
 
-##Download
+##Project
 
 Clone or download the project: 
 
