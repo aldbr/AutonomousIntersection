@@ -6,6 +6,7 @@ from ModelController import *
 import sys
 sys.path.append('..')
 from model.Model import *
+from model.ClassicTrafficIntersection import *
 
 class MainController:
 
@@ -17,8 +18,8 @@ class MainController:
 
 
 	def initialize_simulation(self):
-		m1 = ModelController(self.scene, Model())
-		m2 = ModelController(self.scene2, Model())
+		m1 = ModelController(self.scene, Model(ClassicTrafficIntersection("ressources/intersectionPaths.csv")))
+		m2 = ModelController(self.scene2, Model(ClassicTrafficIntersection("ressources/intersectionPaths.csv")))
 
 		m1.start()
 		m2.start()

@@ -6,9 +6,11 @@ import time
 class BasicVehicle(Vehicle):
 
 	
-	def __init__(self, traficPath):	
+	def __init__(self, traficPath, traffic):	
 		Vehicle.__init__(self,traficPath, KMUnityConverter.convert_KmH_to_unit(50))
-		pass
+		self.traffic = traffic
+		self.is_on = False
+		
 
 
 	def run(self):
@@ -27,13 +29,21 @@ class BasicVehicle(Vehicle):
 
 
 	def rouler(self):
+		state_change = 0
 		i = 0
 		length = len(self._traficPath.positions)
 		while i < length :
+			if self.is_on:
+				if self.speed < 10:
+					self.accelerate(5)
+			else:
+				if self.speed > 1:
+					self.slow_down(5)
+
 			self._position = self._traficPath.positions[i]
 			i += self.speed
 			time.sleep(0.05)
-			#self.slow_down(5)
+			
 		self._position = None
 
 
