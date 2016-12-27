@@ -14,7 +14,6 @@ class MainController:
 	def __init__(self):
 		self.scene = VisualEnvironmentFactory.load_from_CSV_file("Classic Intersection" ,"ressources/vClassIntersection.csv", 0)
 		self.scene2 = VisualEnvironmentFactory.load_from_CSV_file("Autonomous Intersection" ,"ressources/vAutoIntersection.csv", 600)
-		random.seed(140)
 
 
 	def initialize_simulation(self):
