@@ -37,11 +37,6 @@ class Vehicle(Thread):
 	
 	@abstractmethod
 	def run(self):
-		self.rouler()
-
-	@abstractmethod	
-	def rouler():
 		pass
-
 
 

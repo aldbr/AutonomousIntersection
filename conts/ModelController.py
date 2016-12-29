@@ -26,21 +26,18 @@ class ModelController(Thread):
 				
 				size = self.model.count
 				while i < size:
-					#pos = self.model.vehicles[i].position
 					pos = self.model.traffic[i].position
 					if pos is not None:
 						boxes.append(box(display=self.scene, pos=(pos.x, 2.5, pos.y), \
 							length=2, height=2, width=2, color=color.red))
 					else:
-						#self.model.vehicles[i].join()
 						self.model.traffic[i].join()
 						self.model.count -= 1
 						size -= 1
-						#del self.model.vehicles[i]
 						del self.model.traffic[i]
 
 					i += 1
-				rate(500)
+				rate(50)
 
 				for b in boxes:
 					b.visible = 0
