@@ -21,11 +21,11 @@ class BasicVehicle(Vehicle):
 
 	def accelerate(self, speed):
 		if speed > 0 :
-			self.speed += KMUnityConverter.convert_KmH_to_unit(speed)
+			self.speed += speed
 
 	def slow_down(self, speed):
-		if speed > 0 and speed < self.speed:
-			self.speed -= KMUnityConverter.convert_KmH_to_unit(speed)
+		if speed >= 0 and speed < self.speed:
+			self.speed -= speed
 		else:
 			self.speed = 0
 

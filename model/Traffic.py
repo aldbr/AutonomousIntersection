@@ -1,4 +1,5 @@
 from TrafficPathFactory import *
+from KmUnityConverter import *
 
 from abc import ABCMeta, abstractmethod
 from threading import Thread
@@ -8,7 +9,7 @@ class Traffic(Thread):
 
 	def __init__(self, filename):
 		Thread.__init__(self)
-		self._paths = TrafficPathFactory.load_from_CSV_src_dst_file(filename, 0.1)
+		self._paths = TrafficPathFactory.load_from_CSV_src_dst_file(filename, KMUnityConverter.step)
 
 	def _get_paths(self):
 		return self._paths
