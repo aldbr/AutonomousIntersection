@@ -5,7 +5,8 @@ import numpy
 from ClassicTrafficIntersection import *
 from BasicVehicle import *
 
-class Model(Thread): 
+class Model(Thread):
+	"""Simulation management""" 
 
 	def __init__(self, traffic):
 		Thread.__init__(self)
@@ -16,6 +17,7 @@ class Model(Thread):
 
 
 	def run(self):
+		"""Create agent on the road environment"""
 		poisson = self.rand_generator.poisson(2, 100)
 
 		self.traffic.start()

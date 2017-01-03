@@ -5,6 +5,7 @@ from ClassicIntersectionBasicVehicleDriveStrategy import *
 import time
 
 class BasicVehicle(Vehicle):
+	"""Basic vehicle agent management : subclass of Vehicle"""
 
 	
 	def __init__(self, traficPath, traffic):	
@@ -20,10 +21,12 @@ class BasicVehicle(Vehicle):
 		self.driveStrategy.drive(self)
 
 	def accelerate(self, speed):
+		"""Increase vehicle speed"""
 		if speed > 0 :
 			self.speed += speed
 
 	def slow_down(self, speed):
+		"""Decrease vehicle speed"""
 		if speed >= 0 and speed < self.speed:
 			self.speed -= speed
 		else:

@@ -6,6 +6,7 @@ from threading import Thread
 
 class Traffic(Thread):
 	__metaclass__=ABCMeta
+	"""Traffic management"""
 
 	def __init__(self, filename):
 		Thread.__init__(self)

@@ -1,14 +1,16 @@
 from Path import *
 
 class TrafficPathFactory:
+	"""Factory of traffic paths"""
 
 	@staticmethod
 	def load_from_CSV_position_file(filename):
-		"""	CSVFile must contains path with all positions :
+		"""Load paths from a CSVFile which must contains path with all positions :
 				#num, x, y
 				0, 0, 0
 				0, 1, 1
-				..."""
+				...
+				not used at the moment"""
 		paths = []
 		with open(filename, "r") as filePath:
 			filePath.readline()
@@ -45,12 +47,13 @@ class TrafficPathFactory:
 
 	@classmethod
 	def load_from_CSV_src_dst_file(cls, filename, step):
-		"""	CSVFile must only contains path with 
+		"""Load paths from CSVFile which must only contains path with 
 				source and destination postions :
 				#num, x, y, x2, y2
-				0, 0, 0
-				0, 1, 1
-				..."""
+				0, 0, 2.5, 34, 2.5
+				0, 34, 2.5, 34, 34
+				...
+				not stable at the moment"""
 		paths = []
 		with open(filename, "r") as filePath:
 			filePath.readline()

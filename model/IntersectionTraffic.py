@@ -5,6 +5,7 @@ from abc import ABCMeta, abstractmethod
 
 class IntersectionTraffic(Traffic):
 	__metaclass__=ABCMeta
+	"""Intersection agent management : subclass of Traffic"""
 
 	def __init__(self, filename):
 		Traffic.__init__(self, filename)

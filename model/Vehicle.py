@@ -3,6 +3,7 @@ from threading import Thread
 
 class Vehicle(Thread): 
 	__metaclass__=ABCMeta
+	"""Vehicle agent management"""
 
 	def __init__(self, traficPath, speed):
 		Thread.__init__(self)

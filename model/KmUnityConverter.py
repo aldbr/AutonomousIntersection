@@ -2,6 +2,7 @@ import math
 
 
 class KMUnityConverter:
+	"""Scale management : Km/h - Unity converter"""
 
 	step = 0.001
 

@@ -7,8 +7,10 @@ from math import *
 import time
 
 class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
+	"""Drive strategy management for basic vehicles on classic intersection"""
 
 	def drive(self, vehicle):
+		"""Drive strategy method : not complete"""
 		i = 0
 		j = 0
 
@@ -33,6 +35,7 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 		vehicle._position = None
 
 	def calculate_acceleration(self, vehicle):
+		"""Calculate deceleration to reach a point at 0km/h : not complete"""
 		redlight_x_pos = 2.5 #TODO
 		redlight_y_pos = 7 #TODO
 

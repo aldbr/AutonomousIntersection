@@ -1,3 +1,4 @@
+"""Main file"""
 from model.Position import *
 from model.BasicVehicle import *
 from conts.MainController import *

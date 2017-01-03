@@ -11,6 +11,7 @@ from model.IntersectionTraffic import *
 from model.Model import *
 
 class ModelController(Thread):
+	"""Visual simulation windows management"""
 
 	def __init__(self, scene, model):
 		Thread.__init__(self)
@@ -18,6 +19,7 @@ class ModelController(Thread):
 		self.model = model
 
 	def run(self):
+		"""Display road environment with cars and pedestrians"""
 			boxes = []
 			
 			self.model.start()

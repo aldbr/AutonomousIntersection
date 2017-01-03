@@ -4,6 +4,7 @@ import time
 from IntersectionTraffic import *
 
 class ClassicTrafficIntersection(IntersectionTraffic):
+	"""Classic intersection agent management : subclass of IntersectionTraffic"""
 
 	def __init__(self, filename):
 		Thread.__init__(self)
@@ -15,6 +16,7 @@ class ClassicTrafficIntersection(IntersectionTraffic):
 		self.is_green = True
 
 	def add(self, vehicle):
+		"""Add the car on the correct road depending on its source position"""
 		if vehicle.position.x < 0 and vehicle.position.y < 0:
 			self.road1.append(vehicle)
 		elif vehicle.position.x < 0 and vehicle.position.y > 0:
@@ -25,6 +27,7 @@ class ClassicTrafficIntersection(IntersectionTraffic):
 			self.road4.append(vehicle)
 
 	def __getitem__(self, index):
+		"""Return a car depending on the index : used for browse all the items"""
 		elt = None
 		
 		s1 = len(self.road1)
@@ -42,6 +45,7 @@ class ClassicTrafficIntersection(IntersectionTraffic):
 		return elt
 
 	def __delitem__(self, index):
+		"""Delete a car depending on the index : used for delete all the items"""
 		s1 = len(self.road1)
 		s2 = len(self.road2)
 		s3 = len(self.road3)
@@ -57,6 +61,7 @@ class ClassicTrafficIntersection(IntersectionTraffic):
 			del self.road4[index-(s1+s2+s3)]
 
 	def run(self):
+		"""Social behaviour of the classic intersection"""
 		while 1 : 
 			start = time.time()
 			

@@ -9,6 +9,7 @@ from model.Model import *
 from model.ClassicTrafficIntersection import *
 
 class MainController:
+	"""Main windows management"""
 
 
 	def __init__(self):
@@ -17,6 +18,7 @@ class MainController:
 
 
 	def initialize_simulation(self):
+		"""Initialize simulations"""
 		m1 = ModelController(self.scene, Model(ClassicTrafficIntersection("ressources/intersectionPaths.csv")))
 		m2 = ModelController(self.scene2, Model(ClassicTrafficIntersection("ressources/intersectionPaths.csv")))
 
