@@ -1,6 +1,6 @@
 
 class Position:
-	"""Position management"""
+	"""Position management with x,y coordinates"""
 
 	def __init__(self, x, y):
 		self._x = x
