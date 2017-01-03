@@ -1,38 +1,9 @@
 from Path import *
+from KmUnityConverter import *
+from TrafficFactory import *
 
-class TrafficPathFactory:
+class TrafficPathFactory(TrafficFactory):
 	"""Factory of traffic paths"""
-
-	@staticmethod
-	def load_from_CSV_position_file(filename):
-		"""Load paths from a CSVFile which must contains path with all positions :
-				#num, x, y
-				0, 0, 0
-				0, 1, 1
-				...
-				not used at the moment"""
-		paths = []
-		with open(filename, "r") as filePath:
-			filePath.readline()
-			line = filePath.readline()
-			
-			while line :
-				p = Path([])
-				(num, x, y) = line.split(",")
-				numRef = num
-				
-				while line and numRef == num :
-					num = int(num)
-					x = float(x)
-					y = float(y)
-					p.positions.append(Position(x,y))
-					line = filePath.readline()
-					if(line):
-						(num, x, y) = line.split(",")
-				
-				paths.append(p)
-		return paths
-
 
 	@classmethod
 	def frange(cls, x, y, jump):
@@ -46,7 +17,7 @@ class TrafficPathFactory:
 				x -= jump
 
 	@classmethod
-	def load_from_CSV_src_dst_file(cls, filename, step):
+	def load_from_CSV_file(cls, filename):
 		"""Load paths from CSVFile which must only contains path with 
 				source and destination postions :
 				#num, x, y, x2, y2
@@ -55,6 +26,7 @@ class TrafficPathFactory:
 				...
 				not stable at the moment"""
 		paths = []
+		step = KMUnityConverter.step
 		with open(filename, "r") as filePath:
 			filePath.readline()
 			line = filePath.readline()

@@ -2,13 +2,15 @@ from threading import Thread
 import time
 
 from IntersectionTraffic import *
+from LightFactory import *
 
 class ClassicTrafficIntersection(IntersectionTraffic):
 	"""Classic intersection agent management : subclass of IntersectionTraffic"""
 
-	def __init__(self, filename):
+	def __init__(self, filenamePaths, filenameLights):
 		Thread.__init__(self)
-		IntersectionTraffic.__init__(self, filename)
+		IntersectionTraffic.__init__(self, filenamePaths)
+		lights = LightFactory.load_from_CSV_file(filenameLights)
 		self.road1 = []
 		self.road2 = []
 		self.road3 = []

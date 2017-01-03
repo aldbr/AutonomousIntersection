@@ -19,8 +19,10 @@ class MainController:
 
 	def initialize_simulation(self):
 		"""Initialize simulations"""
-		m1 = ModelController(self.scene, Model(ClassicTrafficIntersection("ressources/intersectionPaths.csv")))
-		m2 = ModelController(self.scene2, Model(ClassicTrafficIntersection("ressources/intersectionPaths.csv")))
+		m1 = ModelController(self.scene, Model(ClassicTrafficIntersection\
+			("ressources/intersectionPaths.csv","ressources/lightPosition.csv")))
+		m2 = ModelController(self.scene2, Model(ClassicTrafficIntersection\
+			("ressources/intersectionPaths.csv","ressources/lightPosition.csv")))
 
 		m1.start()
 		m2.start()
