@@ -74,22 +74,22 @@ class ClassicTrafficIntersection(IntersectionTraffic):
 			while total < 30:
 				if self.is_green :
 					for v in self.road1:
-						v.is_on = True
+						v.traficPath.signs[0].is_green = True
 					for v in self.road4:
-						v.is_on = True
+						v.traficPath.signs[0].is_green = True
 					for v in self.road2:
-						v.is_on = False
+						v.traficPath.signs[0].is_green = False
 					for v in self.road3:
-						v.is_on = False
+						v.traficPath.signs[0].is_green = False
 				else:
 					for v in self.road1:
-						v.is_on = False
+						v.traficPath.signs[0].is_green = False
 					for v in self.road4:
-						v.is_on = False
+						v.traficPath.signs[0].is_green = False
 					for v in self.road2:
-						v.is_on = True
+						v.traficPath.signs[0].is_green = True
 					for v in self.road3:
-						v.is_on = True
+						v.traficPath.signs[0].is_green = True
 				time.sleep(0.1)
 				end = time.time()
 				total = end - start

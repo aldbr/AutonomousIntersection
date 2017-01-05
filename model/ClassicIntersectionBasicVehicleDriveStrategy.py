@@ -18,7 +18,7 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 
 		length = len(vehicle._traficPath.positions)
 		while i < length :
-			if vehicle.is_on:
+			if vehicle.traficPath.signs[0].is_green :
 				acceleration_is_define = False
 				if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50):
 					vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.41))
