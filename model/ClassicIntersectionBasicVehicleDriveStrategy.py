@@ -16,7 +16,7 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 
 		acceleration_is_define = False
 
-		length = len(vehicle._traficPath.positions)
+		length = len(vehicle.traficPath.positions)
 		while i < length :
 			if vehicle.traficPath.signs[0].is_green :
 				acceleration_is_define = False
@@ -28,16 +28,16 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 					acceleration_is_define = True
 				vehicle.slow_down(a)
 
-			vehicle._position = vehicle._traficPath.positions[i]
+			vehicle.position = vehicle.traficPath.positions[i]
 			i += vehicle.speed
 			time.sleep(0.05)
 			
-		vehicle._position = None
+		vehicle.position = None
 
 	def calculate_acceleration(self, vehicle):
 		"""Calculate deceleration to reach a point at 0km/h : not complete"""
-		red_light = vehicle._traficPath.signs[0]
+		red_light = vehicle.traficPath.signs[0]
 
-		dist = sqrt(pow(vehicle._position.x-red_light.position.x,2)+pow(vehicle._position.y-red_light.position.y,2))*(1/KMUnityConverter.step)
+		dist = sqrt(pow(vehicle.position.x-red_light.position.x,2)+pow(vehicle.position.y-red_light.position.y,2))*(1/KMUnityConverter.step)
 		a = pow(vehicle.speed,2)/(2*dist)
 		return int(a)
