@@ -17,11 +17,11 @@ class ClassicTrafficIntersection(IntersectionTraffic):
 
 	def add(self, vehicle):
 		"""Add the car on the correct road depending on its source position"""
-		if vehicle.position.x < 0 and vehicle.position.y < 0:
+		if vehicle.position.localization.x < 0 and vehicle.position.localization.y < 0:
 			self.road1.append(vehicle)
-		elif vehicle.position.x < 0 and vehicle.position.y > 0:
+		elif vehicle.position.localization.x < 0 and vehicle.position.localization.y > 0:
 			self.road2.append(vehicle)
-		elif vehicle.position.x > 0 and vehicle.position.y < 0:
+		elif vehicle.position.localization.x > 0 and vehicle.position.localization.y < 0:
 			self.road3.append(vehicle)
 		else:
 			self.road4.append(vehicle)

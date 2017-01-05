@@ -37,7 +37,8 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 	def calculate_acceleration(self, vehicle):
 		"""Calculate deceleration to reach a point at 0km/h : not complete"""
 		red_light = vehicle.traficPath.signs[0]
-
-		dist = sqrt(pow(vehicle.position.x-red_light.position.x,2)+pow(vehicle.position.y-red_light.position.y,2))*(1/KMUnityConverter.step)
+		print(red_light.position.localization.x)
+		dist = sqrt(pow(vehicle.position.localization.x-red_light.position.localization.x,2)\
+			+pow(vehicle.position.localization.y-red_light.position.localization.y,2))*(1/KMUnityConverter.step)
 		a = pow(vehicle.speed,2)/(2*dist)
 		return int(a)

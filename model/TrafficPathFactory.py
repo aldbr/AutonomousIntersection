@@ -2,6 +2,7 @@ from Path import *
 from KmUnityConverter import *
 from TrafficFactory import *
 from Light import *
+from Coordinate import *
 
 class TrafficPathFactory(TrafficFactory):
 	"""Factory of traffic paths"""
@@ -62,7 +63,7 @@ class TrafficPathFactory(TrafficFactory):
 
 					positions = zip(xlist,ylist)
 					for pos in positions:
-							p.positions.append(Position(pos[0], pos[1]))
+							p.positions.append(Position(Coordinate(pos[0], pos[1]), None))
 				
 				line = filePath.readline()
 				nb = int(line)
@@ -73,7 +74,7 @@ class TrafficPathFactory(TrafficFactory):
 					y = float(y)
 					s = None
 					if sign == "light":
-						s = Light(Position(x,y))
+						s = Light(Position(Coordinate(x,y), None))
 
 					if s != None:
 						p.signs.append(s)

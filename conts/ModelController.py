@@ -30,7 +30,7 @@ class ModelController(Thread):
 			while i < size:
 				pos = self.model.traffic[i].position
 				if pos is not None:
-					boxes.append(box(display=self.scene, pos=(pos.x, 2.5, pos.y), \
+					boxes.append(box(display=self.scene, pos=(pos.localization.x, 2.5, pos.localization.y), \
 						length=2, height=2, width=2, color=color.red))
 				else:
 					self.model.traffic[i].join()
