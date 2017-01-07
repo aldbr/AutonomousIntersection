@@ -18,12 +18,20 @@ class ClassicTrafficIntersection(IntersectionTraffic):
 	def add(self, vehicle):
 		"""Add the car on the correct road depending on its source position"""
 		if vehicle.position.localization.x < 0 and vehicle.position.localization.y < 0:
+			if len(self.road1) > 0 :
+				vehicle.next_vehicle = self.road1[-1]
 			self.road1.append(vehicle)
 		elif vehicle.position.localization.x < 0 and vehicle.position.localization.y > 0:
+			if len(self.road2) > 0 :
+				vehicle.next_vehicle = self.road2[-1]
 			self.road2.append(vehicle)
 		elif vehicle.position.localization.x > 0 and vehicle.position.localization.y < 0:
+			if len(self.road3) > 0 :
+				vehicle.next_vehicle = self.road3[-1]
 			self.road3.append(vehicle)
 		else:
+			if len(self.road4) > 0 :
+				vehicle.next_vehicle = self.road4[-1]
 			self.road4.append(vehicle)
 
 	def __getitem__(self, index):

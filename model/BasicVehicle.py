@@ -8,8 +8,8 @@ class BasicVehicle(Vehicle):
 	"""Basic vehicle agent management : subclass of Vehicle"""
 
 	
-	def __init__(self, traficPath, traffic):	
-		Vehicle.__init__(self,traficPath, KMUnityConverter.convert_KmH_to_unit(50))
+	def __init__(self, traficPath, traffic, next_vehicle):	
+		Vehicle.__init__(self,traficPath, KMUnityConverter.convert_KmH_to_unit(50), next_vehicle)
 		self.traffic = traffic
 
 		self.driveStrategy = ClassicIntersectionBasicVehicleDriveStrategy()

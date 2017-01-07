@@ -9,7 +9,11 @@ class Traffic(Thread):
 
 	def __init__(self, filename):
 		Thread.__init__(self)
-		self.paths = TrafficPathFactory.load_from_CSV_file(filename)
+		self.paths = []
+		self.filename = filename
+
+	def initialize(self):
+		self.paths = TrafficPathFactory.load_from_CSV_file(self.filename)
 
 
 	@abstractmethod

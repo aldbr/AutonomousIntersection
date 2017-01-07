@@ -22,11 +22,11 @@ class TrafficPathFactory(TrafficFactory):
 	def load_from_CSV_file(cls, filename):
 		"""Load paths from CSVFile which must only contains path with 
 				source and destination postions, and roadsigns present on the path :
-				#nb//x1, y1, x2, y2//nbsigns//x, y
+				#nb//x1, y1, x2, y2//nbsigns//x, y,axis
 				1
-				2.5, 34, 2.5, -34
+				2.5, 34, 2.5, -34, 270
 				1
-				light, 2.5, 7
+				light, 2.5, 7, 90
 				...
 				probably not stable at the moment"""
 		paths = []
@@ -41,11 +41,14 @@ class TrafficPathFactory(TrafficFactory):
 				nb = int(line)
 				for i in range(nb):
 					line = filePath.readline()
-					(x, y, x2, y2) = line.split(",")
+					
+					(x, y, x2, y2, axis) = line.split(",")
 					x = float(x)
 					y = float(y)
 					x2 = float(x2)
 					y2 = float(y2)
+					axis = float(axis)
+
 
 					xlist = []
 					ylist = []
@@ -63,22 +66,24 @@ class TrafficPathFactory(TrafficFactory):
 
 					positions = zip(xlist,ylist)
 					for pos in positions:
-							p.positions.append(Position(Coordinate(pos[0], pos[1]), None))
+							p.positions.append(Position(Coordinate(pos[0], pos[1]), Coordinate(axis, None)))
 				
 				line = filePath.readline()
 				nb = int(line)
 				for i in range(nb):
 					line = filePath.readline()
-					(sign, x, y) = line.split(",")
+					(sign, x, y, axis) = line.split(",")
 					x = float(x)
 					y = float(y)
+					axis = float(axis)
+
 					s = None
 					if sign == "light":
-						s = Light(Position(Coordinate(x,y), None))
+						s = Light(Position(Coordinate(x,y), Coordinate(axis,None)))
 
 					if s != None:
 						p.signs.append(s)
+
 				line = filePath.readline()
 				paths.append(p)
-
 		return paths

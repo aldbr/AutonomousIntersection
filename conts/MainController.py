@@ -25,9 +25,10 @@ class MainController:
 			("ressources/intersectionPathsAndSigns.csv")))
 		m2 = ModelController(self.scene2, Model(ClassicTrafficIntersection\
 			("ressources/intersectionPathsAndSigns.csv")))
-
+		
 		m1.start()
 		m2.start()
+		
 
 		m1.join()
 		m2.join()
