@@ -38,52 +38,69 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 	def drive(self, vehicle):
 		"""Drive strategy method : not complete"""
 		i = 0
+
 		j = 0
 
 		acceleration_is_define = False
 		distance_is_define = False
 		position_light_is_define = False
 
+
 		length = len(vehicle.traficPath.positions)
 		while i < length and vehicle.position is not None :
+			#if the light is red
 			if not vehicle.traficPath.signs[0].is_green :
-				
+				if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50) and not acceleration_is_define : #avoid speed = 0 at the beginning because of light change
+					vehicle.speed = KMUnityConverter.convert_KmH_to_unit(50)
+
+				#define the position of the vehicle and the next vehicle
 				if not position_light_is_define : 
 					after_light = self.is_after_light(vehicle)
 					next_after_light = self.is_after_light(vehicle.next_vehicle)
 					position_light_is_define = True
-				
+				#if the vehicle is before the red light
 				if not after_light : 
-					if vehicle.next_vehicle is not None and not next_after_light :
+					#if the next vehicle is before the red light
+					if vehicle.next_vehicle is not None and vehicle.next_vehicle.position is not None and not next_after_light :
 						
-						if vehicle.next_vehicle.acceleration != 0 : #this line is not normal
-							if not distance_is_define :
-								distance1 = self.calculate_distance(vehicle.next_vehicle)
-								distance2 = self.calculate_euclidean_distance(vehicle.next_vehicle.position.localization, vehicle.position.localization)
-								distance = distance1 + distance2 - 3000
+						if not distance_is_define :
+							distance1 = self.calculate_distance(vehicle.next_vehicle)
+							distance2 = self.calculate_euclidean_distance(vehicle.next_vehicle.position.localization, vehicle.position.localization)
+							distance = distance1 + distance2 - 3000
+							distance_is_define = True
 
-								distance_is_define = True
+						if not acceleration_is_define : 
+							vehicle.acceleration = self.calculate_acceleration_with_distance(vehicle, distance)
+							acceleration_is_define = True
 
-							if not acceleration_is_define : 
-								vehicle.acceleration = self.calculate_acceleration_with_distance(vehicle, distance)
-								acceleration_is_define = True
-							vehicle.slow_down(vehicle.acceleration)
+						vehicle.slow_down(vehicle.acceleration)
+
+					#if the next vehicle is after the red light
 					else :
 						
 						if not acceleration_is_define :
 							vehicle.acceleration = self.calculate_acceleration(vehicle, vehicle.traficPath.signs[0].position.localization)
 							acceleration_is_define = True
 						vehicle.slow_down(vehicle.acceleration)
+				#if the vehicle is after the red light
 				else :
 					if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50):
 						vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.41))
+			#if the light is green
 			else :
 				acceleration_is_define = False
 				distance_is_define = False
 				position_light_is_define = False
+				j = 1
 
-				if vehicle.next_vehicle :
-					vehicle.speed = vehicle.next_vehicle.speed
+				#if there is a next vehicle
+				if vehicle.next_vehicle is not None :
+					if vehicle.next_vehicle.position is not None : 
+						vehicle.speed = vehicle.next_vehicle.speed
+					else : 
+						if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50):
+							vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.41))
+
 				else :
 					if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50):
 						vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.41))
@@ -108,10 +125,10 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 	def calculate_acceleration_with_distance(self, vehicle, distance):
 		"""Calculate deceleration to reach a point at 0km/h : not complete"""
 		try:
-			a = pow(vehicle.speed,2)/(2*distance)
+			a = pow(vehicle.speed,2)/(2*distance) #warning speed = 0
 		except ZeroDivisionError, e:
 			vehicle.position = None #vehicle is at the beginning of the intersection with another vehicle
-			a = 0
+			a = 5
 		finally:
 			return int(a)
 
@@ -119,8 +136,7 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 		try:
 			distance = pow(vehicle.speed,2)/(2*vehicle.acceleration)
 		except ZeroDivisionError, e:
-			distance = 20000 #TODO
-			print(vehicle.acceleration)
+			distance = 20000
 		finally:
 			return int(distance)
 
