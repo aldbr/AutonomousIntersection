@@ -2,21 +2,29 @@ from threading import Thread
 import time
 
 from IntersectionTraffic import *
+from datetime import datetime
 
 class ClassicTrafficIntersection(IntersectionTraffic):
 	"""Classic intersection agent management : subclass of IntersectionTraffic"""
 
-	def __init__(self, filenamePaths):
+	def __init__(self, filenamePaths, trafficName):
 		Thread.__init__(self)
-		IntersectionTraffic.__init__(self, filenamePaths)
+		IntersectionTraffic.__init__(self, filenamePaths, trafficName)
 		self.road1 = []
 		self.road2 = []
 		self.road3 = []
 		self.road4 = []
 		self.is_green = True
 
+		self.maxVehiculeTimePath = 0 # Maximum travel time of a vehicle
+		self.minVehiculeTimePath = 999 # Minimum travel time of a vehicle
+		self.sumVehiculeTimePath = 0 # Sum of travel times of all vehicles
+		self.nbVehicules = 0 #Number of vehicles which have crossed the intersection
+
 	def add(self, vehicle):
-		"""Add the car on the correct road depending on its source position"""
+		"""Add the car on the correct road depending on its source position"""		
+		vehicle.timeStart = datetime.now()
+
 		if vehicle.position.localization.x < 0 and vehicle.position.localization.y < 0:
 			if len(self.road1) > 0 :
 				vehicle.next_vehicle = self.road1[-1]
@@ -59,14 +67,39 @@ class ClassicTrafficIntersection(IntersectionTraffic):
 		s3 = len(self.road3)
 		s4 = len(self.road4)
 		
+		
 		if s1 > index:
+			diff = datetime.now() - self.road1[index].timeStart		
 			del self.road1[index]
 		elif s1+s2 > index:
+			diff = datetime.now() - self.road2[index-s1].timeStart
 			del self.road2[index-s1]
 		elif s1+s2+s3 > index:
+			diff = datetime.now() - self.road3[index-(s1+s2)].timeStart
 			del self.road3[index-(s1+s2)]
 		else:
+			diff = datetime.now() - self.road4[index-(s1+s2+s3)].timeStart
 			del self.road4[index-(s1+s2+s3)]
+
+		vehiculeTimePath = diff.total_seconds() #Travel time of a vehicle
+
+		if vehiculeTimePath < self.minVehiculeTimePath:
+			self.minVehiculeTimePath = vehiculeTimePath
+		elif vehiculeTimePath > self.maxVehiculeTimePath:
+			self.maxVehiculeTimePath = vehiculeTimePath 
+
+		self.sumVehiculeTimePath += vehiculeTimePath 
+		self.nbVehicules += 1
+		if self.nbVehicules%30 ==0:
+			filenameSaveTimes = self.trafficName+"_times.txt"
+			#Save of travel times
+			try:
+				file = open(filenameSaveTimes, "w")
+				file.write("Mean={}\nMin={}\nMax={}\n".format(self.sumVehiculeTimePath/self.nbVehicules, self.minVehiculeTimePath, self.maxVehiculeTimePath))
+				file.close()
+			except IOError:
+				print "Could not open file {} !".format(filenameSaveTimes)
+	   
 
 	def run(self):
 		"""Social behaviour of the classic intersection"""

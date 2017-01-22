@@ -7,8 +7,8 @@ class IntersectionTraffic(Traffic):
 	__metaclass__=ABCMeta
 	"""Intersection agent management : subclass of Traffic"""
 
-	def __init__(self, filename):
-		Traffic.__init__(self, filename)
+	def __init__(self, filename, trafficName):
+		Traffic.__init__(self, filename, trafficName)
 
 
 	@abstractmethod

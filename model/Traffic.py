@@ -7,10 +7,11 @@ class Traffic(Thread):
 	__metaclass__=ABCMeta
 	"""Traffic management"""
 
-	def __init__(self, filename):
+	def __init__(self, filename, trafficName):
 		Thread.__init__(self)
 		self.paths = []
 		self.filename = filename
+		self.trafficName = trafficName
 
 	def initialize(self):
 		self.paths = TrafficPathFactory.load_from_CSV_file(self.filename)

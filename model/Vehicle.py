@@ -12,6 +12,7 @@ class Vehicle(Thread):
 		self.traficPath = traficPath
 		self.position = traficPath.positions[0]
 		self.next_vehicle = next_vehicle
+		self.timeStart = 0
 
 	@abstractmethod
 	def accelerate(self, speed):
