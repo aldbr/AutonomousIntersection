@@ -39,8 +39,6 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 		"""Drive strategy method : not complete"""
 		i = 0
 
-		j = 0
-
 		acceleration_is_define = False
 		distance_is_define = False
 		position_light_is_define = False
@@ -91,19 +89,44 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 				acceleration_is_define = False
 				distance_is_define = False
 				position_light_is_define = False
-				j = 1
 
 				#if there is a next vehicle
-				if vehicle.next_vehicle is not None :
-					if vehicle.next_vehicle.position is not None : 
-						vehicle.speed = vehicle.next_vehicle.speed
-					else : 
-						if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50):
-							vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.41))
+				if vehicle.next_vehicle is not None and vehicle.next_vehicle.position is not None \
+				and vehicle.position.axis.x == vehicle.next_vehicle.position.axis.x : 
+					#print("nextvehicle")
+					vehicle.speed = vehicle.next_vehicle.speed
 
 				else :
-					if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50):
-						vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.41))
+					#print("nonextvehicle")
+					destination_direction = vehicle.traficPath.positions[-1].axis.x
+					difference = (vehicle.position.axis.x - destination_direction)%360
+					#if vehicle turn left
+					if difference == 270 : 
+						#print("turnleft")
+						face_vehicle = self.vehicle_in_front_of(vehicle)
+						if face_vehicle is not None : 
+							#print("facevehicle")
+							#if both vehicles want to turn left
+							if face_vehicle.traficPath.positions is not None \
+							and (face_vehicle.traficPath.positions[-1].axis.x - vehicle.traficPath.positions[-1].axis.x)%360 == 180 \
+							and not self.is_after_light(face_vehicle):
+								acceleration_is_define = False
+								if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50):
+									vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.41))
+							else : 
+								if not acceleration_is_define :
+									vehicle.acceleration = self.calculate_acceleration(vehicle, vehicle.traficPath.signs[0].position.localization)
+									acceleration_is_define = True
+									vehicle.slow_down(vehicle.acceleration)
+						else :
+							#print("nofacevehicule") 
+							if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50):
+								vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.41))
+
+					else :
+						#print("noturnleft", difference)
+						if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50):
+							vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.41))
 
 			vehicle.position = vehicle.traficPath.positions[i]
 			i += vehicle.speed
@@ -118,27 +141,28 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 
 		dist = sqrt(pow(vehicle.position.localization.x-localization.x,2)\
 			+pow(vehicle.position.localization.y-localization.y,2))*(1/KMUnityConverter.step)
-		a = pow(vehicle.speed,2)/(2*dist)
+		if dist != 0 :
+			a = pow(vehicle.speed,2)/(2*dist)
+		else :
+			a = vehicle.speed
 
 		return int(a)
 
 	def calculate_acceleration_with_distance(self, vehicle, distance):
 		"""Calculate deceleration to reach a point at 0km/h : not complete"""
-		try:
+		if distance != 0 :
 			a = pow(vehicle.speed,2)/(2*distance) #warning speed = 0
-		except ZeroDivisionError, e:
+		else : 
 			vehicle.position = None #vehicle is at the beginning of the intersection with another vehicle
-			a = 5
-		finally:
-			return int(a)
+			a = vehicle.speed
+		return int(a)
 
 	def calculate_distance(self, vehicle):
-		try:
+		if vehicle.acceleration != 0 :
 			distance = pow(vehicle.speed,2)/(2*vehicle.acceleration)
-		except ZeroDivisionError, e:
+		else : 
 			distance = 20000
-		finally:
-			return int(distance)
+		return int(distance)
 
 	def calculate_euclidean_distance(self, local1, local2):
 		dist = sqrt(pow(local1.x-local2.x,2)\
@@ -164,6 +188,29 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 			print("Unknown error.")
 		finally:
 			return is_after
+
+	def vehicle_in_front_of(self, vehicle):
+		direction = vehicle.position.axis.x
+		if direction == 0 :
+				vehicles_in_front_of = vehicle.traffic.road3
+		elif direction == 90 :
+				vehicles_in_front_of = vehicle.traffic.road1
+		elif direction == 180 :
+				vehicles_in_front_of = vehicle.traffic.road2
+		else :
+				vehicles_in_front_of = vehicle.traffic.road4
+
+		face_vehicle = None
+		i = 0
+		fin = False
+		while not fin and i < len(vehicles_in_front_of) is not None and vehicles_in_front_of[i].position is not None : 
+			if (vehicles_in_front_of[i].position.axis.x - vehicle.position.axis.x)%360 == 180 :
+				face_vehicle = vehicles_in_front_of[i]
+				fin = True
+			i += 1
+		return face_vehicle
+
+
 		
 
 

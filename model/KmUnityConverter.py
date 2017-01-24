@@ -17,6 +17,9 @@ class KMUnityConverter:
 		u = m / (0.7*cls.step) #0.0007m = 0.001u
 		return int(round(u))
 
+	@classmethod
+	def convert_m_to_unit(cls, m):
+		return m/0.7
 
 
 

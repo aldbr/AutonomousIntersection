@@ -26,7 +26,8 @@ class Model(Thread):
 			for p in poisson:
 				i = 0
 				while i < p:
-					v = BasicVehicle(self.traffic.paths[self.rand_generator.randint(1, len(self.traffic.paths))-1], self.traffic, None)
+					v = BasicVehicle(self.traffic.paths[self.rand_generator.randint(1, len(self.traffic.paths))-1], \
+						self.traffic, None)
 					self.traffic.add(v)
 					v.start()
 					
@@ -34,5 +35,17 @@ class Model(Thread):
 					time.sleep(0.25)
 					i += 1
 				time.sleep(1)
+			#v = BasicVehicle(self.traffic.paths[4], \
+			#			self.traffic, None)
+			#self.traffic.add(v)
+			#v2 = BasicVehicle(self.traffic.paths[6], \
+			#			self.traffic, None)
+			#self.traffic.add(v2)
+			#v.start()
+			#v2.start()
+			#self.count += 2
+			#time.sleep(5)
+
+
 
 
