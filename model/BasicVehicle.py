@@ -1,6 +1,7 @@
 from Vehicle import *
 from KmUnityConverter import *
 from ClassicIntersectionBasicVehicleDriveStrategy import *
+from AutonomousIntersectionBasicVehicleDriveStrategy import *
 
 import time
 
@@ -12,7 +13,7 @@ class BasicVehicle(Vehicle):
 		Vehicle.__init__(self,traficPath, KMUnityConverter.convert_KmH_to_unit(50), next_vehicle)
 		self.traffic = traffic
 
-		self.driveStrategy = ClassicIntersectionBasicVehicleDriveStrategy()
+		self.driveStrategy = None
 		
 
 

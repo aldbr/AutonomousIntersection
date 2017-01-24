@@ -2,6 +2,7 @@ from threading import Thread
 import time
 
 from IntersectionTraffic import *
+from ClassicIntersectionBasicVehicleDriveStrategy import *
 from datetime import datetime
 
 class ClassicTrafficIntersection(IntersectionTraffic):
@@ -24,6 +25,8 @@ class ClassicTrafficIntersection(IntersectionTraffic):
 	def add(self, vehicle):
 		"""Add the car on the correct road depending on its source position"""		
 		vehicle.timeStart = datetime.now()
+		vehicle.driveStrategy = ClassicIntersectionBasicVehicleDriveStrategy()
+
 
 		if vehicle.position.localization.x < 0 and vehicle.position.localization.y < 0:
 			if len(self.road1) > 0 :
@@ -112,7 +115,7 @@ class ClassicTrafficIntersection(IntersectionTraffic):
 				self.is_green = True
 
 			total = 0
-			while total < 30:
+			while total < 15:
 				if self.is_green :
 					for v in self.road1:
 						v.traficPath.signs[0].is_green = True
