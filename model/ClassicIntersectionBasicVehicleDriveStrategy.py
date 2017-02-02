@@ -9,32 +9,6 @@ import time
 class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 	"""Drive strategy management for basic vehicles on classic intersection"""
 
-	def drive2(self, vehicle):
-		"""Drive strategy method : not complete"""
-		i = 0
-		j = 0
-
-		acceleration_is_define = False
-
-		length = len(vehicle.traficPath.positions)
-		while i < length :
-			if vehicle.traficPath.signs[0].is_green :
-				acceleration_is_define = False
-				if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50):
-					vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.41))
-			else:
-				if not acceleration_is_define :
-					a = self.calculate_acceleration(vehicle, vehicle.traficPath.signs[0].position.localization)
-					acceleration_is_define = True
-				vehicle.slow_down(a)
-
-			vehicle.position = vehicle.traficPath.positions[i]
-			i += vehicle.speed
-			time.sleep(0.05)
-			
-		vehicle.position = None
-
-
 	def drive(self, vehicle):
 		"""Drive strategy method : not complete"""
 		i = 0
@@ -83,7 +57,7 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 				#if the vehicle is after the red light
 				else :
 					if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50):
-						vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.41))
+						vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.60))
 			#if the light is green
 			else :
 				acceleration_is_define = False
@@ -93,40 +67,54 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 				#if there is a next vehicle
 				if vehicle.next_vehicle is not None and vehicle.next_vehicle.position is not None \
 				and vehicle.position.axis.x == vehicle.next_vehicle.position.axis.x : 
-					#print("nextvehicle")
-					vehicle.speed = vehicle.next_vehicle.speed
+					
+					if vehicle.speed < vehicle.next_vehicle.speed :
+						vehicle.speed = vehicle.next_vehicle.speed
+						acceleration_is_define = False
+						distance_is_define = False
+					else :
+						if not distance_is_define :
+							distance1 = self.calculate_distance(vehicle.next_vehicle)
+							distance2 = self.calculate_euclidean_distance(vehicle.next_vehicle.position.localization, vehicle.position.localization)
+							distance = distance1 + distance2 - 3000
+							distance_is_define = True
+
+						if not acceleration_is_define : 
+							vehicle.acceleration = self.calculate_acceleration_with_distance(vehicle, distance)
+							acceleration_is_define = True
+
+						vehicle.slow_down(vehicle.acceleration)
 
 				else :
-					#print("nonextvehicle")
 					destination_direction = vehicle.traficPath.positions[-1].axis.x
 					difference = (vehicle.position.axis.x - destination_direction)%360
 					#if vehicle turn left
 					if difference == 270 : 
-						#print("turnleft")
-						face_vehicle = self.vehicle_in_front_of(vehicle)
+						face_vehicle = self.vehicle_in_front_of(vehicle) #strange
 						if face_vehicle is not None : 
-							#print("facevehicle")
 							#if both vehicles want to turn left
 							if face_vehicle.traficPath.positions is not None \
-							and (face_vehicle.traficPath.positions[-1].axis.x - vehicle.traficPath.positions[-1].axis.x)%360 == 180 \
-							and not self.is_after_light(face_vehicle):
+							and (face_vehicle.traficPath.positions[-1].axis.x - vehicle.traficPath.positions[-1].axis.x)%360 == 180 :
 								acceleration_is_define = False
 								if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50):
-									vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.41))
+									vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.60))
 							else : 
-								if not acceleration_is_define :
-									vehicle.acceleration = self.calculate_acceleration(vehicle, vehicle.traficPath.signs[0].position.localization)
-									acceleration_is_define = True
+								if not self.is_after_light(face_vehicle) :
+									if not acceleration_is_define :
+										vehicle.acceleration = self.calculate_acceleration(vehicle, vehicle.traficPath.signs[0].position.localization)
+										acceleration_is_define = True
 									vehicle.slow_down(vehicle.acceleration)
+								else :
+									if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50):
+										vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.60))
+
 						else :
-							#print("nofacevehicule") 
 							if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50):
-								vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.41))
+								vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.60))
 
 					else :
-						#print("noturnleft", difference)
 						if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50):
-							vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.41))
+							vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.60))
 
 			vehicle.position = vehicle.traficPath.positions[i]
 			i += vehicle.speed
