@@ -2,8 +2,8 @@ from threading import Thread
 import time
 import numpy
 
-from ClassicTrafficIntersection import *
-from BasicVehicle import *
+from traffic.ClassicTrafficIntersection import *
+from vehicle.BasicVehicle import *
 
 class Model(Thread):
 	"""Simulation management""" 

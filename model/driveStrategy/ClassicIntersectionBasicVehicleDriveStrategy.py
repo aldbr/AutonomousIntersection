@@ -1,6 +1,12 @@
-from Vehicle import *
+import sys
+import os
+ 
+CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
+PARENT_FOLDER = os.path.dirname(CURRENT_FOLDER)
+sys.path.append(PARENT_FOLDER)
+from vehicle.Vehicle import *
 from BasicVehicleDriveStrategy import *
-from KmUnityConverter import *
+from converter.KmUnityConverter import *
 
 from math import *
 

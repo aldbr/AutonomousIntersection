@@ -1,4 +1,6 @@
-from Vehicle import *
+import sys
+sys.path.append('..')
+from vehicle.Vehicle import *
 
 from abc import ABCMeta, abstractmethod
 

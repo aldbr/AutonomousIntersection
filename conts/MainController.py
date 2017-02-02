@@ -6,7 +6,8 @@ from ModelController import *
 import sys
 sys.path.append('..')
 from model.Model import *
-from model.ClassicTrafficIntersection import *
+from model.traffic.AutonomousTrafficIntersection import *
+from model.traffic.ClassicTrafficIntersection import *
 
 class MainController:
 	"""Main windows management"""

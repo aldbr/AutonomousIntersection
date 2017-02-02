@@ -4,12 +4,7 @@ import random
 
 import sys
 sys.path.append('..')
-from model.Path import *
-from model.BasicVehicle import *
-from model.Position import *
-from model.IntersectionTraffic import *
-from model.AutonomousTrafficIntersection import *
-from model.Model import *
+
 
 class ModelController(Thread):
 	"""Visual simulation windows management"""

@@ -1,4 +1,4 @@
-from Vehicle import *
+from vehicle.Vehicle import *
 from DriveStrategy import *
 
 from abc import ABCMeta, abstractmethod

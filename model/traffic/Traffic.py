@@ -1,4 +1,10 @@
-from TrafficPathFactory import *
+import sys
+import os
+CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
+PARENT_FOLDER = os.path.dirname(CURRENT_FOLDER)
+sys.path.append(PARENT_FOLDER)
+
+from trafficFactory.TrafficPathFactory import *
 
 from abc import ABCMeta, abstractmethod
 from threading import Thread

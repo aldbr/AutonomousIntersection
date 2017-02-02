@@ -1,12 +1,19 @@
 from threading import Thread
 import time
 
+import sys
+import os
+CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
+PARENT_FOLDER = os.path.dirname(CURRENT_FOLDER)
+sys.path.append(PARENT_FOLDER)
+
 from IntersectionTraffic import *
-from ClassicIntersectionBasicVehicleDriveStrategy import *
+from driveStrategy.AutonomousIntersectionBasicVehicleDriveStrategy import *
 from datetime import datetime
 
-class ClassicTrafficIntersection(IntersectionTraffic):
-	"""Classic intersection agent management : subclass of IntersectionTraffic"""
+
+class AutonomousTrafficIntersection(IntersectionTraffic):
+	"""Autonomous intersection management"""
 
 	def __init__(self, filenamePaths, trafficName):
 		Thread.__init__(self)
@@ -25,8 +32,7 @@ class ClassicTrafficIntersection(IntersectionTraffic):
 	def add(self, vehicle):
 		"""Add the car on the correct road depending on its source position"""		
 		vehicle.timeStart = datetime.now()
-		vehicle.driveStrategy = ClassicIntersectionBasicVehicleDriveStrategy()
-
+		vehicle.driveStrategy = AutonomousIntersectionBasicVehicleDriveStrategy()
 
 		if vehicle.position.localization.x < 0 and vehicle.position.localization.y < 0:
 			if len(self.road1) > 0 :
@@ -105,39 +111,5 @@ class ClassicTrafficIntersection(IntersectionTraffic):
 	   
 
 	def run(self):
-		"""Social behaviour of the classic intersection"""
-		while 1 : 
-			start = time.time()
-			
-			if self.is_green :
-				self.is_green = False
-			else :
-				self.is_green = True
-
-			total = 0
-			while total < 15:
-				if self.is_green :
-					for v in self.road1:
-						v.traficPath.signs[0].is_green = True
-					for v in self.road4:
-						v.traficPath.signs[0].is_green = True
-					for v in self.road2:
-						v.traficPath.signs[0].is_green = False
-					for v in self.road3:
-						v.traficPath.signs[0].is_green = False
-				else:
-					for v in self.road1:
-						v.traficPath.signs[0].is_green = False
-					for v in self.road4:
-						v.traficPath.signs[0].is_green = False
-					for v in self.road2:
-						v.traficPath.signs[0].is_green = True
-					for v in self.road3:
-						v.traficPath.signs[0].is_green = True
-				time.sleep(0.1)
-				end = time.time()
-				total = end - start
-
-
-
-
+		"""Social behaviour of the autonomous intersection"""
+		pass

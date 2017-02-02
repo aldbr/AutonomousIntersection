@@ -1,8 +1,13 @@
-from Path import *
-from KmUnityConverter import *
+import sys
+import os
+CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
+PARENT_FOLDER = os.path.dirname(CURRENT_FOLDER)
+sys.path.append(PARENT_FOLDER)
+from path.Path import *
+from converter.KmUnityConverter import *
 from TrafficFactory import *
-from Light import *
-from Coordinate import *
+from path.Light import *
+from path.Coordinate import *
 
 class TrafficPathFactory(TrafficFactory):
 	"""Factory of traffic paths"""

@@ -1,10 +1,13 @@
-from Vehicle import *
-from BasicVehicleDriveStrategy import *
-from KmUnityConverter import *
-
 from math import *
-
 import time
+
+import sys
+sys.path.append('..')
+from converter.KmUnityConverter import *
+from BasicVehicleDriveStrategy import *
+from vehicle.Vehicle import *
+
+
 
 class AutonomousIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 	"""Drive strategy management for basic vehicles on autonomous intersection"""
