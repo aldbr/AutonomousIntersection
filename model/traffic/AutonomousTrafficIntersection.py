@@ -9,6 +9,7 @@ sys.path.append(PARENT_FOLDER)
 
 from IntersectionTraffic import *
 from driveStrategy.AutonomousIntersectionBasicVehicleDriveStrategy import *
+from observer.Observer import *
 from datetime import datetime
 
 
@@ -22,7 +23,7 @@ class AutonomousTrafficIntersection(IntersectionTraffic):
 		self.road2 = []
 		self.road3 = []
 		self.road4 = []
-		self.is_green = True
+		self.outOfTheAreaEvent = AutonomousTrafficIntersection.OutOfTheAreaObserver(self)
 
 		self.maxVehiculeTimePath = 0 # Maximum travel time of a vehicle
 		self.minVehiculeTimePath = 999 # Minimum travel time of a vehicle
@@ -33,6 +34,7 @@ class AutonomousTrafficIntersection(IntersectionTraffic):
 		"""Add the car on the correct road depending on its source position"""		
 		vehicle.timeStart = datetime.now()
 		vehicle.driveStrategy = AutonomousIntersectionBasicVehicleDriveStrategy()
+		vehicle.driveStrategy.outOfTheAreaEvent.addObserver(self.outOfTheAreaEvent)
 
 		if vehicle.position.localization.x < 0 and vehicle.position.localization.y < 0:
 			if len(self.road1) > 0 :
@@ -113,3 +115,10 @@ class AutonomousTrafficIntersection(IntersectionTraffic):
 	def run(self):
 		"""Social behaviour of the autonomous intersection"""
 		pass
+
+
+	class OutOfTheAreaObserver(Observer):
+		def __init__(self, outer):
+			self.outer = outer
+		def update(self, observable, arg):
+			print("Bee's breakfast time!")
