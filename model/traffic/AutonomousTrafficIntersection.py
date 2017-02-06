@@ -23,7 +23,16 @@ class AutonomousTrafficIntersection(IntersectionTraffic):
 		self.road2 = []
 		self.road3 = []
 		self.road4 = []
+
+		self.area1 = []
+		self.area2 = []
+		self.area3 = []
+		self.area4 = []
+
+		self.queue = []
+
 		self.outOfTheAreaEvent = AutonomousTrafficIntersection.OutOfTheAreaObserver(self)
+		self.intersectionCrossedEvent = AutonomousTrafficIntersection.IntersectionCrossedObserver(self)
 
 		self.maxVehiculeTimePath = 0 # Maximum travel time of a vehicle
 		self.minVehiculeTimePath = 999 # Minimum travel time of a vehicle
@@ -35,23 +44,28 @@ class AutonomousTrafficIntersection(IntersectionTraffic):
 		vehicle.timeStart = datetime.now()
 		vehicle.driveStrategy = AutonomousIntersectionBasicVehicleDriveStrategy()
 		vehicle.driveStrategy.outOfTheAreaEvent.addObserver(self.outOfTheAreaEvent)
+		vehicle.driveStrategy.intersectionCrossedNotifier.addObserver(self.intersectionCrossedEvent)
 
 		if vehicle.position.localization.x < 0 and vehicle.position.localization.y < 0:
 			if len(self.road1) > 0 :
 				vehicle.next_vehicle = self.road1[-1]
 			self.road1.append(vehicle)
+			self.area1.append(vehicle)
 		elif vehicle.position.localization.x < 0 and vehicle.position.localization.y > 0:
 			if len(self.road2) > 0 :
 				vehicle.next_vehicle = self.road2[-1]
 			self.road2.append(vehicle)
+			self.area2.append(vehicle)
 		elif vehicle.position.localization.x > 0 and vehicle.position.localization.y < 0:
 			if len(self.road3) > 0 :
 				vehicle.next_vehicle = self.road3[-1]
 			self.road3.append(vehicle)
+			self.area3.append(vehicle)
 		else:
 			if len(self.road4) > 0 :
 				vehicle.next_vehicle = self.road4[-1]
 			self.road4.append(vehicle)
+			self.area4.append(vehicle)
 
 	def __getitem__(self, index):
 		"""Return a car depending on the index : used for browse all the items"""
@@ -118,7 +132,29 @@ class AutonomousTrafficIntersection(IntersectionTraffic):
 
 
 	class OutOfTheAreaObserver(Observer):
+		"""Update the queue to organise the crossing of the intersection"""
 		def __init__(self, outer):
 			self.outer = outer
 		def update(self, observable, arg):
-			print("Bee's breakfast time!")
+			self.outer.queue.extend(self.outer.area1)
+			self.outer.queue.extend(self.outer.area2)
+			self.outer.queue.extend(self.outer.area3)
+			self.outer.queue.extend(self.outer.area4)
+			del self.outer.area1[:]
+			del self.outer.area2[:]
+			del self.outer.area3[:]
+			del self.outer.area4[:]
+
+			if len(self.outer.queue) != 0 :
+				self.outer.queue[0].driveStrategy.is_on = True
+
+	class IntersectionCrossedObserver(Observer):
+		"""Update the queue to organise the crossing of the intersection"""
+		def __init__(self, outer):
+			self.outer = outer
+		def update(self, observable, arg):
+			if len(self.outer.queue) != 0:
+				del self.outer.queue[0]
+			
+			if len(self.outer.queue) != 0 :
+				self.outer.queue[0].driveStrategy.is_on = True

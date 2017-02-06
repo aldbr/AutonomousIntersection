@@ -44,7 +44,7 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 						if not distance_is_define :
 							distance1 = self.calculate_distance(vehicle.next_vehicle)
 							distance2 = self.calculate_euclidean_distance(vehicle.next_vehicle.position.localization, vehicle.position.localization)
-							distance = distance1 + distance2 - 3000
+							distance = distance1 + distance2 - 5000
 							distance_is_define = True
 
 						if not acceleration_is_define : 
@@ -81,8 +81,8 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 					else :
 						if not distance_is_define :
 							distance1 = self.calculate_distance(vehicle.next_vehicle)
-							distance2 = self.calculate_euclidean_distance(vehicle.next_vehicle.position.localization, vehicle.position.localization)
-							distance = distance1 + distance2 - 3000
+							distance2 = self.calculate_euclidean_distance(vehicle.next_vehicle.position.localization, vehicle.position.localization) #try catch
+							distance = distance1 + distance2 - 5000
 							distance_is_define = True
 
 						if not acceleration_is_define : 

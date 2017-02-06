@@ -34,16 +34,38 @@ class Model(Thread):
 					self.count += 1
 					time.sleep(0.25)
 					i += 1
-				time.sleep(3)
+				time.sleep(1)
 			#v = BasicVehicle(self.traffic.paths[4], \
 			#			self.traffic, None)
 			#self.traffic.add(v)
+			#v5 = BasicVehicle(self.traffic.paths[4], \
+			#			self.traffic, None)
+			#self.traffic.add(v5)
+			#v6 = BasicVehicle(self.traffic.paths[4], \
+			#			self.traffic, None)
+			#self.traffic.add(v6)
 			#v2 = BasicVehicle(self.traffic.paths[6], \
 			#			self.traffic, None)
 			#self.traffic.add(v2)
+			#v3 = BasicVehicle(self.traffic.paths[6], \
+			#			self.traffic, None)
+			#self.traffic.add(v3)
+			#v4 = BasicVehicle(self.traffic.paths[6], \
+			#			self.traffic, None)
+			#self.traffic.add(v4)
 			#v.start()
+			#time.sleep(0.25)
+			#v5.start()
+			#time.sleep(0.25)
+			#v6.start()
+			#time.sleep(0.25)
 			#v2.start()
-			#self.count += 2
+			#time.sleep(0.25)
+			#v3.start()
+			#time.sleep(0.25)
+			#v4.start()
+#
+			#self.count += 6
 			#time.sleep(5)
 
 
