@@ -23,11 +23,16 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 		distance_is_define = False
 		position_light_is_define = False
 
+		all_is_define = False
+
 
 		length = len(vehicle.traficPath.positions)
 		while i < length and vehicle.position is not None :
 			#if the light is red
 			if not vehicle.traficPath.signs[0].is_green :
+				
+				all_is_define = False
+
 				if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50) and not acceleration_is_define : #avoid speed = 0 at the beginning because of light change
 					vehicle.speed = KMUnityConverter.convert_KmH_to_unit(50)
 
@@ -66,18 +71,19 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 						vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.60))
 			#if the light is green
 			else :
-				acceleration_is_define = False
-				distance_is_define = False
-				position_light_is_define = False
+				if not all_is_define :
+					acceleration_is_define = False
+					distance_is_define = False
+					position_light_is_define = False
 
-				#if there is a next vehicle
+				#if there is a next vehicle			
 				if vehicle.next_vehicle is not None and vehicle.next_vehicle.position is not None \
 				and vehicle.position.axis.x == vehicle.next_vehicle.position.axis.x : 
 					
 					if vehicle.speed < vehicle.next_vehicle.speed :
 						vehicle.speed = vehicle.next_vehicle.speed
-						acceleration_is_define = False
-						distance_is_define = False
+						#acceleration_is_define = False
+						#distance_is_define = False
 					else :
 						if not distance_is_define :
 							distance1 = self.calculate_distance(vehicle.next_vehicle)
@@ -88,6 +94,8 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 						if not acceleration_is_define : 
 							vehicle.acceleration = self.calculate_acceleration_with_distance(vehicle, distance)
 							acceleration_is_define = True
+							print(vehicle)
+							all_is_define = True
 
 						vehicle.slow_down(vehicle.acceleration)
 
@@ -95,7 +103,7 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 					destination_direction = vehicle.traficPath.positions[-1].axis.x
 					difference = (vehicle.position.axis.x - destination_direction)%360
 					#if vehicle turn left
-					if difference == 270 : 
+					if difference == 270 :
 						face_vehicle = self.vehicle_in_front_of(vehicle) #strange
 						if face_vehicle is not None : 
 							#if both vehicles want to turn left
@@ -105,7 +113,8 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 								if vehicle.speed < KMUnityConverter.convert_KmH_to_unit(50):
 									vehicle.accelerate(KMUnityConverter.convert_KmH_to_unit(0.60))
 							else : 
-								if not self.is_after_light(face_vehicle) :
+								#if not self.is_after_light(face_vehicle) :
+								if self.vehicule_can_pass(vehicle, face_vehicle):
 									if not acceleration_is_define :
 										vehicle.acceleration = self.calculate_acceleration(vehicle, vehicle.traficPath.signs[0].position.localization)
 										acceleration_is_define = True
@@ -197,13 +206,40 @@ class ClassicIntersectionBasicVehicleDriveStrategy(BasicVehicleDriveStrategy):
 		face_vehicle = None
 		i = 0
 		fin = False
-		while not fin and i < len(vehicles_in_front_of) is not None and vehicles_in_front_of[i].position is not None : 
-			if (vehicles_in_front_of[i].position.axis.x - vehicle.position.axis.x)%360 == 180 :
-				face_vehicle = vehicles_in_front_of[i]
-				fin = True
+		while not fin and i < len(vehicles_in_front_of) and vehicles_in_front_of[i].position is not None : 
+			##if (vehicles_in_front_of[i].position.axis.x - vehicle.position.axis.x)%360 == 180 :
+			if direction == 0 :
+				if vehicle.position.localization.x < vehicles_in_front_of[i].position.localization.x:
+					face_vehicle = vehicles_in_front_of[i]
+					fin = True
+			elif direction == 90 :
+				if vehicle.position.localization.y > vehicles_in_front_of[i].position.localization.y:
+					face_vehicle = vehicles_in_front_of[i]
+					fin = True
+			elif direction == 180 :
+				if vehicle.position.localization.x > vehicles_in_front_of[i].position.localization.x:
+					face_vehicle = vehicles_in_front_of[i]
+					fin = True
+			else :
+				if vehicle.position.localization.y < vehicles_in_front_of[i].position.localization.y:
+					face_vehicle = vehicles_in_front_of[i]
+					fin = True
 			i += 1
 		return face_vehicle
 
+	def vehicule_can_pass(self, vehicle, face_vehicle):
+		if face_vehicle is None:
+			return True
+		direction = vehicle.position.axis.x
+		if direction == 0 :
+			return face_vehicle.position.localization.x > vehicle.position.localization.x
+		elif direction == 90 :
+			return face_vehicle.position.localization.y < vehicle.position.localization.y
+		elif direction == 180 :
+			return face_vehicle.position.localization.x < vehicle.position.localization.x
+		else :
+			return face_vehicle.position.localization.y > vehicle.position.localization.y
+#return face_vehicle is not None and face_vehicle.position.localization.x > vehicle.position.localization.x
 
 		
 

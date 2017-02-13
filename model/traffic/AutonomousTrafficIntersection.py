@@ -136,10 +136,12 @@ class AutonomousTrafficIntersection(IntersectionTraffic):
 		def __init__(self, outer):
 			self.outer = outer
 		def update(self, observable, arg):
+			
 			self.outer.queue.extend(self.outer.area1)
 			self.outer.queue.extend(self.outer.area2)
 			self.outer.queue.extend(self.outer.area3)
 			self.outer.queue.extend(self.outer.area4)
+			
 			del self.outer.area1[:]
 			del self.outer.area2[:]
 			del self.outer.area3[:]
@@ -148,13 +150,13 @@ class AutonomousTrafficIntersection(IntersectionTraffic):
 			if len(self.outer.queue) != 0 :
 				self.outer.queue[0].driveStrategy.is_on = True
 
+
 	class IntersectionCrossedObserver(Observer):
 		"""Update the queue to organise the crossing of the intersection"""
 		def __init__(self, outer):
 			self.outer = outer
-		def update(self, observable, arg):
-			if len(self.outer.queue) != 0:
-				del self.outer.queue[0]
+		def update(self, observable, arg):			
+			del self.outer.queue[0]
 			
 			if len(self.outer.queue) != 0 :
 				self.outer.queue[0].driveStrategy.is_on = True

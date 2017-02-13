@@ -38,7 +38,7 @@ class ClassicTrafficIntersection(IntersectionTraffic):
 		if vehicle.position.localization.x < 0 and vehicle.position.localization.y < 0:
 			if len(self.road1) > 0 :
 				vehicle.next_vehicle = self.road1[-1]
-			self.road1.append(vehicle)
+			self.road1.append(vehicle)			
 		elif vehicle.position.localization.x < 0 and vehicle.position.localization.y > 0:
 			if len(self.road2) > 0 :
 				vehicle.next_vehicle = self.road2[-1]
@@ -79,7 +79,7 @@ class ClassicTrafficIntersection(IntersectionTraffic):
 		
 		
 		if s1 > index:
-			diff = datetime.now() - self.road1[index].timeStart		
+			diff = datetime.now() - self.road1[index].timeStart
 			del self.road1[index]
 		elif s1+s2 > index:
 			diff = datetime.now() - self.road2[index-s1].timeStart

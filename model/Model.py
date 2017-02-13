@@ -34,7 +34,7 @@ class Model(Thread):
 					self.count += 1
 					time.sleep(0.25)
 					i += 1
-				time.sleep(1)
+				time.sleep(2)
 			#v = BasicVehicle(self.traffic.paths[4], \
 			#			self.traffic, None)
 			#self.traffic.add(v)
